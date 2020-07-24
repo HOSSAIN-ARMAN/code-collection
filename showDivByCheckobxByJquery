@@ -1,0 +1,572 @@
+@extends('seller.layouts.master')
+@section('title','Seller Profile')
+@section('page-header')
+    <i class="ace-icon glyphicon glyphicon-user"></i> Seller Profile
+@stop
+
+@section('content')
+    @include('backend.components.page_header', [
+       'fa' => 'fa fa-list',
+       'name' => 'Seller Profile',
+       'route' => route('backend.product.child_categories.index')
+    ])
+
+    <div class="col-sm-9">
+        <form class="form-horizontal"
+              method="post"
+              action="{{route('backend.product.child_categories.store')}}"
+              role="form"
+              enctype="multipart/form-data">
+        @csrf
+
+            <!-- Name -->
+            <div class="form-group">
+                <label class="col-sm-3 " for="name">Name <sup class="red">*</sup></label>
+
+                <div class="col-sm-8">
+                    <input type="text"
+                           id="name"
+                           placeholder=" - Your name -"
+                           class="form-control input-sm"
+                           name="name"
+{{--                           required--}}
+                           value="{{old('name')}}">
+{{--                    <strong class=" red">{{ $errors->first('name') }}</strong>--}}
+                </div>
+            </div>
+
+            <!-- Name -->
+            <div class="form-group">
+                <label class="col-sm-3 " for="proprietor_name">Proprietor name <sup class="red">*</sup></label>
+
+                <div class="col-sm-8">
+                    <input type="text"
+                           id="proprietor_name"
+                           placeholder=" - Proprietor_name -"
+                           class="form-control input-sm"
+                           name="proprietor_name"
+{{--                           required--}}
+                           value="{{old('proprietor_name')}}">
+{{--                    <strong class=" red">{{ $errors->first('proprietor_name') }}</strong>--}}
+                </div>
+            </div>
+
+            {{-- Company Registration number --}}
+
+            <div class="form-group">
+                <label class="col-sm-3" for="registration_number">Company Registration number <sup class="red">*</sup></label>
+
+                <div class="col-sm-8">
+                    <input type="text"
+                           id="registration_number"
+                           placeholder=" - Registration Number -"
+                           class="form-control input-sm"
+                           name="registration_number"
+{{--                           required--}}
+                           value="{{old('proprietor_name')}}">
+{{--                    <strong class=" red">{{ $errors->first('registration_number') }}</strong>--}}
+                </div>
+            </div>
+
+            {{-- Corporate address --}}
+            <div class="form-group">
+                <label class="col-sm-3 " for="crporate_address">Corporate Address <sup class="red">*</sup></label>
+
+                <div class="col-sm-8">
+                    <input type="text"
+                           id="crporate_address"
+                           placeholder=" - Corporate Address -"
+                           class="form-control input-sm"
+                           name="crporate_address"
+{{--                           required--}}
+                           value="{{old('crporate_address')}}">
+{{--                    <strong class=" red">{{ $errors->first('crporate_address') }}</strong>--}}
+                </div>
+            </div>
+
+            {{-- Vat Registration number --}}
+             <div class="form-group">
+                <label class="col-sm-3 " for="vat_registration_number">Vat Registration number <sup class="red">*</sup></label>
+
+                <div class="col-sm-8">
+                    <input type="text"
+                           id="vat_registration_number"
+                           placeholder=" - Vat Registration number -"
+                           class="form-control input-sm"
+                           name="vat_registration_number"
+{{--                           required--}}
+                           value="{{old('vat_registration_number')}}">
+{{--                    <strong class=" red">{{ $errors->first('vat_registration_number') }}</strong>--}}
+                </div>
+            </div>
+
+
+            {{-- owners NID numberr --}}
+             <div class="form-group">
+                <label class="col-sm-3 " for="nid_number">Owners NID number <sup class="red">*</sup></label>
+
+                <div class="col-sm-8">
+                    <input type="text"
+                           id="nid_number"
+                           placeholder=" - NID number -"
+                           class="form-control input-sm"
+                           name="nid_number"
+{{--                           required--}}
+                           value="{{old('nid_number')}}">
+{{--                    <strong class=" red">{{ $errors->first('nid_number') }}</strong>--}}
+                </div>
+            </div>
+
+             {{-- Trade licenses --}}
+             <div class="form-group">
+                <label class="col-sm-3 " for="nid_number">Trade licenses <sup class="red">*</sup></label>
+
+                <div class="col-sm-8">
+                    <input type="text"
+                           id="nid_number"
+                           placeholder=" - Trade licenses -"
+                           class="form-control input-sm"
+                           name="trade_licenses"
+{{--                           required--}}
+                           value="{{old('trade_licenses')}}">
+{{--                    <strong class=" red">{{ $errors->first('trade_licenses') }}</strong>--}}
+                </div>
+            </div>
+
+             {{-- 8. Main Business --}}
+             <div class="form-group">
+                <label class="col-sm-3 " for="nid_number">Main Business <sup class="red">*</sup></label>
+
+                <div class="col-sm-8">
+                    <input type="text"
+                           id="nid_number"
+                           placeholder=" - Trade licenses -"
+                           class="form-control input-sm"
+                           name="main_business"
+{{--                           required--}}
+                           value="{{old('main_business')}}">
+{{--                    <strong class=" red">{{ $errors->first('main_business') }}</strong>--}}
+                </div>
+            </div>
+
+            {{-- Product Category --}}
+
+        <div class="form-group">
+                <label class="col-sm-3 " for="nid_number">Product Category<sup class="red">*</sup></label>
+
+                <div class="col-sm-8">
+                     <select multiple="" class="chosen-select form-control" id="form-field-select-4" data-placeholder="Choose a State..." style="display: none;">
+                        <option value="SC">South Carolina</option>
+                        <option value="SD">South Dakota</option>
+                        <option value="TN">Tennessee</option>
+                        <option value="TX">Texas</option>
+                        <option value="UT">Utah</option>
+                        <option value="VT">Vermont</option>
+                        <option value="VA">Virginia</option>
+                        <option value="WA">Washington</option>
+                        <option value="WV">West Virginia</option>
+                        <option value="WI">Wisconsin</option>
+                        <option value="WY">Wyoming</option>
+                    </select>
+{{--                    <strong class=" red">{{ $errors->first('main_business') }}</strong>--}}
+                </div>
+            </div>
+
+            {{-- company corporate number --}}
+            <div class="form-group">
+                <label class="col-sm-3 " for="name">company corporate number <sup class="red">*</sup></label>
+
+                <div class="col-sm-8">
+                    <input type="text"
+                           id="name"
+                           placeholder=" - corporate number -"
+                           class="form-control input-sm"
+{{--                           required--}}
+                    >
+                </div>
+            </div>
+
+
+
+            {{-- 13. main contact person: number --}}
+            <div class="form-group">
+                <label class="col-sm-3 " for="name">Main contact person: number <sup class="red">*</sup></label>
+
+                <div class="col-sm-8">
+                    <input type="text"
+                           id="name"
+                           placeholder=" - number -"
+                           class="form-control input-sm"
+                           name="address"
+{{--                           required--}}
+                           >
+                </div>
+            </div>
+            {{-- 14. site location contact person and cellphone number --}}
+
+            <!-- {{-- 14. site location contact person and cellphone number --}} -->
+            <div class="form-group">
+                <label class="col-sm-3 " for="name"> Site location contact person and cellphone number <sup class="red">*</sup></label>
+
+                <div class="col-sm-8">
+                   <textarea id="form-field-11" class="autosize-transition form-control" style="overflow: hidden; overflow-wrap: break-word; resize: horizontal; height: 52px;"></textarea>
+                </div>
+            </div>
+
+
+
+
+            <!-- division -->
+            <div class="form-group">
+                <label class="col-sm-3" for="division">Division 1<sup class="red">*</sup></label>
+
+                <div class="col-sm-8">
+                    <div class="text-center">
+                        <select class="form-control"
+{{--                                required--}}
+                                id="divisionId"
+                                name="division"
+                                data-placeholder="- division -">
+                            <option value="-1">---select---</option>
+                            @foreach($divisions as $division)
+                            <option value="{{ $division->id }}">{{ $division->name }}</option>
+                            @endforeach
+                            {{-- @foreach($categories as $category) --}}
+                                {{-- <option
+                                    value="{{ $category->id }}"
+                                    {{old('category_id') == $category->id ? 'selected' : ''}}>{{ $category->name }}</option>
+                            @endforeach --}}
+                        </select>
+                    </div>
+{{--                    <strong class=" red">{{ $errors->first('division') }}</strong>--}}
+                </div>
+            </div>
+
+            <!--city -->
+            <div class="form-group">
+                <label class="col-sm-3" for="city">City <sup class="red">*</sup></label>
+
+                <div class="col-sm-8">
+                    <div class="text-center">
+                        <select
+                        		class="form-control"
+{{--                                required--}}
+                                id="getCityByDivision"
+                                name="city"
+                                data-placeholder="- City -"
+                        >
+{{--                            <option></option>--}}
+                        </select>
+                    </div>
+{{--                    <strong class=" red">{{ $errors->first('city') }}</strong>--}}
+                </div>
+            </div>
+
+            {{-- Postcode --}}
+
+            <div class="form-group">
+                <label class="col-sm-3 " for="postcode">Postcode <sup class="red">*</sup></label>
+
+              {{--   <div class="col-sm-8"> --}}
+                    {{-- <div class="text-center">
+                        <select
+                        		class="chosen-select"
+                                required
+                                id="postcode"
+                                name="postcode"
+                                data-placeholder="- postcode -">
+                            <option></option>
+                        </select>
+                    </div> --}}
+                <div class="col-sm-8">
+                    <input type="text"
+                           id="name"
+                           placeholder="- post code -"
+                           class="form-control input-sm"
+                           name="postcode"
+{{--                           required--}}
+                           value="{{old('name')}}">
+{{--                    <strong class=" red">{{ $errors->first('address') }}</strong>--}}
+                </div>
+            </div>
+
+            <hr>
+
+            <h3>Business Address</h3>
+
+            <div class="" style="margin-bottom: 20px">
+               <p style="float: left;margin-right: 10%;"> Same as Warehouse Address</p> <input type="checkbox" id="business_check" checked="">
+            </div>
+            <div id="business_class">
+               <!-- Address -->
+                <div class="form-group">
+                    <label class="col-sm-3 " for="name">Address <sup class="red">*</sup></label>
+
+                    <div class="col-sm-8">
+                        <input type="text"
+                               id="name"
+                               placeholder=" - address -"
+                               class="form-control input-sm"
+                               name="address"
+{{--                               required--}}
+                               value="{{old('name')}}">
+{{--                        <strong class=" red">{{ $errors->first('address') }}</strong>--}}
+                    </div>
+                </div>
+
+                <!-- division -->
+                <div class="form-group">
+                    <label class="col-sm-3" for="division">Division<sup class="red">*</sup></label>
+
+                    <div class="col-sm-8">
+                        <div class="text-center">
+                            <select class="chosen-select"
+{{--                                    required--}}
+                                    id="division"
+                                    name="division"
+                                    data-placeholder="- division -">
+                                <option></option>
+                                {{-- @foreach($categories as $category) --}}
+                                    {{-- <option
+                                        value="{{ $category->id }}"
+                                        {{old('category_id') == $category->id ? 'selected' : ''}}>{{ $category->name }}</option>
+                                @endforeach --}}
+                            </select>
+                        </div>
+{{--                        <strong class=" red">{{ $errors->first('division') }}</strong>--}}
+                    </div>
+                </div>
+
+                <!--city -->
+                <div class="form-group">
+                    <label class="col-sm-3" for="city">City <sup class="red">*</sup></label>
+
+                    <div class="col-sm-8">
+                        <div class="text-center">
+                            <select
+                                    class="chosen-select"
+{{--                                    required--}}
+                                    id="city"
+                                    name="city"
+                                    data-placeholder="- City -">
+                                <option></option>
+                            </select>
+                        </div>
+{{--                        <strong class=" red">{{ $errors->first('city') }}</strong>--}}
+                    </div>
+                </div>
+                {{-- Postcode --}}
+                <div class="form-group">
+                    <label class="col-sm-3 " for="postcode">Postcode <sup class="red">*</sup></label>
+                    <div class="col-sm-8">
+                        <input type="text"
+                               id="name"
+                               placeholder="- post code -"
+                               class="form-control input-sm"
+                               name="postcode"
+{{--                               required--}}
+                               value="{{old('name')}}">
+{{--                        <strong class=" red">{{ $errors->first('address') }}</strong>--}}
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <h3>Return Address</h3>
+
+            <div class="" style="margin-bottom: 20px">
+               <p style="float: left;margin-right: 10%;"> Same as Warehouse Address</p> <input type="checkbox" id="return_id" checked="">
+            </div>
+            <div id="return_class">
+               <!-- Address -->
+                <div class="form-group">
+                    <label class="col-sm-3 " for="name">Address <sup class="red">*</sup></label>
+
+                    <div class="col-sm-8">
+                        <input type="text"
+                               id="name"
+                               placeholder=" - address -"
+                               class="form-control input-sm"
+                               name="address"
+{{--                               required--}}
+                               value="{{old('name')}}">
+                        <strong class=" red">{{ $errors->first('address') }}</strong>
+                    </div>
+                </div>
+
+                <!-- division -->
+
+                <div class="form-group">
+                    <label class="col-sm-3" for="division">Division <sup class="red">*</sup></label>
+
+                    <div class="col-sm-8">
+                        <div class="text-center">
+                            <select class="chosen-select"
+{{--                                    required--}}
+                                    id="division"
+                                    name="division"
+                                    data-placeholder="- division -">
+                                <option></option>
+                                {{-- @foreach($categories as $category) --}}
+                                    {{-- <option
+                                        value="{{ $category->id }}"
+                                        {{old('category_id') == $category->id ? 'selected' : ''}}>{{ $category->name }}</option>
+                                @endforeach --}}
+                            </select>
+                        </div>
+{{--                        <strong class=" red">{{ $errors->first('division') }}</strong>--}}
+                    </div>
+                </div>
+
+                <!--city -->
+                <div class="form-group">
+                    <label class="col-sm-3" for="city">City <sup class="red">*</sup></label>
+
+                    <div class="col-sm-8">
+                        <div class="text-center">
+                            <select
+                                    class="chosen-select"
+{{--                                    required--}}
+                                    id="city"
+                                    name="city"
+                                    data-placeholder="- City -">
+                                <option></option>
+                            </select>
+                        </div>
+{{--                        <strong class=" red">{{ $errors->first('city') }}</strong>--}}
+                    </div>
+                </div>
+                {{-- Postcode --}}
+                <div class="form-group">
+                    <label class="col-sm-3 " for="postcode">Postcode <sup class="red">*</sup></label>
+                    <div class="col-sm-8">
+                        <input type="text"
+                               id="name"
+                               placeholder="- post code -"
+                               class="form-control input-sm"
+                               name="postcode"
+{{--                               required--}}
+                               value="{{old('name')}}">
+{{--                        <strong class=" red">{{ $errors->first('address') }}</strong>--}}
+                    </div>
+                </div>
+            </div>
+           <input type="submit" name="btn" class="btn btn-outline-light btn-lg">
+        </form>
+    </div>
+
+@endsection
+
+@push('js')
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+                // business_check
+            if ($("#business_check").is(':checked')){
+                $("#business_class").hide();
+            }
+
+            $("#business_check").click(function () {
+                if ($(this).is(":checked")) {
+                    $("#business_class").hide();
+                } else {
+                    $("#business_class").show();
+                }
+            });
+
+            // Return Address return_id
+            if ($("#return_id").is(':checked')){
+                $("#return_class").hide();
+            }
+
+            $("#return_id").click(function () {
+                if ($(this).is(":checked")) {
+                    $("#return_class").hide();
+                } else {
+                    $("#return_class").show();
+                }
+            });
+
+        });
+
+        jQuery(function ($) {
+            if (!ace.vars['touch']) {
+                $('.chosen-select').chosen({allow_single_deselect: true, search_contains: true});
+                //resize the chosen on window resize
+                $(window).on('resize.chosen', function () {
+                    $('.chosen-select').each(function () {
+                        let $this = $(this);
+                        $this.next().css({'width': '100%'});
+                        // $this.next().css({'width': $this.parent().width()});
+                    })
+                }).trigger('resize.chosen');
+            }
+
+            const category = $('#category_id');
+            const subcategory = $('#subcategory_id');
+
+            category.change(function () {
+                category.prop("disabled", true);
+                category.trigger("chosen:updated");
+                subcategory.prop("disabled", true);
+                subcategory.trigger("chosen:updated");
+
+                let category_id = $('#category_id').val();
+                category_id = category_id ? category_id : 0;
+
+                $.get("{{route('backend.product.sub_categories.ajax.list',':id')}}".replace(':id', category_id),
+                    null,
+                    function (data) {
+                        console.log(data);
+
+                        subcategory
+                            .empty()
+                            .append(new Option('', ''));
+
+                        data.forEach(function (sub) {
+                            subcategory.append(new Option(sub.name, sub.id));
+                        });
+
+                        category.prop("disabled", false);
+                        subcategory.prop("disabled", false);
+
+                        category.trigger("chosen:updated");
+                        subcategory.trigger("chosen:updated");
+                    });
+            });
+        });
+
+
+
+
+
+        // Uncheck #x
+
+
+    </script>
+    <script>
+        $(document).ready(function () {
+           $('#divisionId').change(function () {
+               var divisionId = $(this).val();
+               var jsonData = {divisionId:divisionId};
+               $.ajax({
+                   url      : 'http://127.0.0.1:8000/seller/dashboard/division/getCityByDivision/'+divisionId,
+                   method   : 'GET',
+                   data     : 'jsonData',
+                   dataType : 'JSON',
+                   success  : function (data) {
+                       $("#getCityByDivision").empty();
+                       $("#getCityByDivision").append('<Option value="' + -1 + '">' + "--select--" + '</Option>');
+                       $.each(data, function (key, value) {
+                           $("#getCityByDivision").append('<option value="' + value.id + '">' + value.name + '</option>');
+                       });
+                   }
+               });
+           });
+        });
+    </script>
+@endpush
+
+
