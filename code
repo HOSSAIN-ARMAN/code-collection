@@ -1,0 +1,1 @@
+   <td>{{ date('j F Y', strtotime($todo->date)) }}</td>
