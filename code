@@ -1,1 +1,5 @@
-   <td>{{ date('j F Y', strtotime($todo->date)) }}</td>
+  1)=> <td>{{ date('j F Y', strtotime($todo->date)) }}</td>
+  
+  2)=>    $data = $req->except('_token', 'id'); // for update
+         Todo::findOrFail($req->get('id'))->update($data);
+         return response()->json('Data Updated');
