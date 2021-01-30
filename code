@@ -3,3 +3,26 @@
   2)=>    $data = $req->except('_token', 'id'); // for update
          Todo::findOrFail($req->get('id'))->update($data);
          return response()->json('Data Updated');
+         
+ 3)=>  [  <---- for single page data showing ----------->
+ <a href="javascript:void(0)" data-id="{{ $commercialCostMethod->id }}" class="btn btn-xs btn-warning edit"><i class="fa fa-edit"></i></a>
+ <script>
+        $(document).on('click', '.edit', function () {
+            let id = $(this).data('id');
+            $.ajax({
+                method: 'get',
+                url: '{{ url('commercial-cost-method') }}/' + id,
+                success: function (result) {
+                    $('#form').attr('action', `commercial-cost-method/${result.id}`).append(`<input type="hidden" name="_method" value="PUT"/>`);
+                    $('#percentage').val(result.percentage);
+                    $('#method').val(result.method);
+                    $('#writeable').val(result.writeable);
+                    $('#submit').html(`<i class="fa fa-save"></i> Update`);
+                },
+                error: function (xhr) {
+                    console.log(xhr)
+                }
+            })
+        })
+    </script>        
+]
