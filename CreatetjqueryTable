@@ -1,0 +1,106 @@
+ <script>
+            const body = $('body');
+
+            $(function (){
+                body.on("click", "#add-to-cart", createTableBody)
+                body.on("click", ".remove-button", removeTableRow)
+            });
+
+            $('#select_item').select2({
+                placeholder: "Select Item",
+                allowClear: true
+            })
+            $('#from').select2({
+                placeholder: "Select Item",
+                allowClear: true
+            })
+            $('#to').select2({
+                placeholder: "Select Item",
+                allowClear: true
+            })
+
+            $('#expected_delivery_date').datepicker({
+                 format: 'yyyy-mm-dd',
+                 autoclose: true,
+                 title: 'Delivery Date',
+            });
+
+
+            $(document).on("change", ".select-option", function () {
+                let item_id = $(this).val();
+                if (!item_id) {
+                    return;
+                }
+                let url = "/item_details/" + item_id;
+                let row = $(this).closest("tr");
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    success: function (response) {
+                        console.log(response);
+                        $(".item_category").val(response.category.name);
+                        $(".details").val(response.description);
+                        $(".uom").val(response.uom_details.name);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            });
+
+            function createTableBody(){
+                let item_id = $(".select-option").children("option:selected").val();
+                let item = $(".select-option").find('option:selected').text();
+                let categoryName = $(".item_category").val();
+                let description  = $(".details").val();
+                let qty = $(".required_qty").val();
+                let uom = $(".uom").val();
+                let remark = $(".remark").val();
+                if (remark == ""){
+                    remark = "N/A";
+                }
+
+                let inputVal = new Array(item_id, qty);
+                let inputMessage = new Array("Item", "Quantity");
+
+                if (inputVal[0] == ""){
+                     toastr.warning(inputMessage[0] + ' Field Can Not be Empty');
+                }else if (inputVal[1] == ""){
+                    toastr.warning('Req ' + inputMessage[1] + ' Field Can Not be Empty');
+                }else {
+                    addRow(item_id, item, categoryName, description, qty, uom, remark);
+                    clearInputFiled();
+                }
+            }
+
+            function addRow(item_id, item, categoryName, description, qty, uom, remark){
+
+                let tr = '<tr id="_row">' +
+                    '<td class="item"><input  type="hidden" name="item[]" value="'+ item_id +'">' + item + '</td>'+
+                    '<td><input  type="hidden" name="item_category[]" value="'+ categoryName +'">'+categoryName + '</td>'+
+                    '<td><input  type="hidden" name="item_description[]" value="'+ description+'">'+ description+'</td>'+
+                    '<td><input  type="hidden" name="required_qty[]" value="'+ qty+'">'+qty +'</td>'+
+                    '<td><input  type="hidden" name="uom[]" value="'+ uom +'">'+ uom +'</td>'+
+                    '<td><input  type="hidden" name="remarks[]" value="'+ remark +'">'+ (remark ?? 'N/A') + '</td>'+
+                    '<td style=""><button type="button" class="btn btn-sm btn-default remove-button"><i class="fa fa-trash text-danger"></i></button></td>'+
+                    '</tr>';
+
+                $('.table-body').append(tr);
+
+            }
+
+            function removeTableRow(){
+                $("#_row").remove();
+                toastr.warning(`Removed Row!`);
+            }
+
+            function clearInputFiled(){
+                $("#select_item").select2('val', null);
+                $(".item_category").val(null);
+                $(".details").val(null);
+                $(".required_qty").val(null);
+                $(".uom").val(null);
+                $(".remark").val(null);
+            }
+
+        </script>
