@@ -1,0 +1,65 @@
+1) ---------------------------------
+public function index(Request $request)
+    {
+        $items = Item::with(["category", "brand", "store_details"])
+            ->filter($request->query('search'))
+            ->orderBy("id","DESC")->paginate();
+        return view('settings::pages.items', [
+            "items" => $items,
+        ]);
+    }
+    
+    public function scopeFilter($query, $search){
+        $query->when($search, function ($query) use ($search) {
+            $query->where('name', 'like', '%' . $search . '%')->orWhereHas('category', function ($query) use ($search){
+                $query->where('name', 'like', '%' . $search . '%');
+            })->orWhereHas('brand', function ($query) use ($search){
+                $query->where('name', 'like', '%' . $search . '%');
+            })->orWhereHas('store_details', function ($query) use ($search){
+                $query->where('name', 'like', '%' . $search . '%');
+            });
+        });
+    }
+    ---------------------------end---------
+    
+    2) ------------------------------------
+     public static function filter($requestData)
+    {
+
+        $fabricBookings = FabricBooking::when($search_sid = $requestData['searchSid'], function ($query) use ($search_sid) {
+            return $query->where('sid', 'like', '%' . $search_sid . '%');
+        })
+            ->when($search_buyer_id = $requestData['searchBuyerId'], function ($query) use ($search_buyer_id) {
+                return $query->whereHas('fabricBookingDetails', function ($query) use ($search_buyer_id) {
+                    $query->where('buyer_id', $search_buyer_id);
+                });
+            })
+            ->when($search_zalo_po_id = $requestData['searchZaloPoId'], function ($query) use ($search_zalo_po_id) {
+                return $query->whereHas('fabricBookingDetails', function ($query) use ($search_zalo_po_id) {
+                    $query->where('zalo_po_id', $search_zalo_po_id);
+                });
+            })
+            ->when($search_style_id = $requestData['searchStyleId'], function ($query) use ($search_style_id) {
+                return $query->whereHas('fabricBookingDetails', function ($query) use ($search_style_id) {
+                    $query->where('style_id', $search_style_id);
+                });
+            })
+            ->when($search_color_id = $requestData['searchColorId'], function ($query) use ($search_color_id) {
+                return $query->whereHas('fabricBookingDetails', function ($query) use ($search_color_id) {
+                    $query->where('color_id', $search_color_id);
+                });
+            })
+            ->when($search_supplier_id = $requestData['searchSupplierId'], function ($query) use ($search_supplier_id) {
+                return $query->where('supplier_id', $search_supplier_id);
+            })
+            ->when($search_season_id = $requestData['searchSeasonId'], function ($query) use ($search_season_id) {
+                return $query->where('season_id', $search_season_id);
+            })->when($search_fabric_type = $requestData['searchFabricType'], function ($query) use ($search_fabric_type) {
+                return $query->where('fabric_type', $search_fabric_type);
+            })->when($search_booking_date = $requestData['searchDate'], function ($query) use ($search_booking_date) {
+                return $query->whereDate('booking_date', $search_booking_date);
+            })->orderBy('id', 'DESC')->paginate();
+
+        return $fabricBookings;
+    }
+------------------------------------------------end---------
