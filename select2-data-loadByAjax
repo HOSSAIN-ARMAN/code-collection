@@ -1,0 +1,36 @@
+------------ using map-------------------
+public function searchLoadData($request, $model)
+    {
+        $search_query = $request->search;
+        $details = [];
+        $model->select('id', 'name')
+            ->where('name', 'like', '%' . $search_query . '%')
+            ->paginate(30)
+            ->map(function ($item, $key) use (&$details) {
+                $details[$key]['id'] = $item->id;
+                $details[$key]['text'] = $item->name;
+            });
+        return $details;
+    }
+    ------------------------------- this is ajax---------------------
+    $('[name="search_buyer_id"]').select2({
+    ajax: {
+        url: '/get-buyers',
+        delay: 250,
+        data: function (params) {
+            var query = {
+                search: params.term,
+                type: 'public'
+            }
+
+            // Query parameters will be ?search=[term]&type=public
+            return query;
+        },
+        processResults: function (data) {
+            return data;
+        },
+        cache: true
+    },
+    placeholder: 'Search Buyer',
+    minimumInputLength: 1,
+});
