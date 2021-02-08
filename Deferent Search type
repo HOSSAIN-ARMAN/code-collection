@@ -63,3 +63,32 @@ public function index(Request $request)
         return $fabricBookings;
     }
 ------------------------------------------------end---------
+
+
+
+
+----------------get data with defrent request type----------------
+
+                   <span class="pull-right">
+                       <a href="{{url('/stock-summary-report-download?type=pdf&'.request()->getQueryString() ?? ['search_buyer_id','search_style_id', 'search_zalo_po_id', 'search_color_id'])}}"
+                       title="Download Pdf">
+                      <i style="color: #DC0A0B" class="fa fa-file-pdf-o"></i></a> &nbsp;|
+                         <a href="{{url('/stock-summary-report-download?type=excel&'.request()->getQueryString() ?? ['search_buyer_id','search_style_id', 'search_zalo_po_id', 'search_color_id'])}}"><i
+                        style="color: #0F733B" class="fa fa-file-excel-o"></i></a>
+					</span>
+                    
+------------------------- another formate get data request formate ---------------------
+
+            <span class="pull-right">
+                  <a href="{{url('/daily-stock-report-download?type=pdf&'.(request()->getQueryString() ?? 'start_date='.($start_date ?? null).'&end_date='.($end_date ?? null)))}}"
+                     title="Download Pdf">
+                      <i style="color: #DC0A0B" class="fa fa-file-pdf-o"></i></a> &nbsp;|
+                <a href="{{url('/daily-stock-report-download?type=excel&'.(request()->getQueryString() ?? 'start_date='.($start_date ?? null).'&end_date='.($end_date ?? null)))}}"><i
+                      style="color: #0F733B" class="fa fa-file-excel-o"></i></a>
+			</span>
+            
+------------------------------------------------------------------------
+
+
+
+
