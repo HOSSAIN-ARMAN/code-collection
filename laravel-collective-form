@@ -1,0 +1,30 @@
+<td>
+                  {!! Form::text("search_sid", request()->get("search_sid") ?? null, ['class' => 'form-control', 'placeholder' => 'Search SID']) !!}
+                </td>
+                <td>
+                  {!! Form::select("search_buyer_id", $buyers ?? [], request()->get("search_buyer_id") ?? null, ['class' => 'form-control select2-input', 'placeholder' => 'Search Buyer']) !!}
+                </td>
+                <td>
+                  {!! Form::select("search_zalo_po_id", $zalo_pos ?? [], request()->get("search_zalo_po_id") ?? null, ['class' => 'form-control select2-input', 'placeholder' => 'Search Zalo PO']) !!}
+                </td>
+                <td>
+                  {!! Form::select("search_style_id", $styles ?? [], request()->get("search_style_id") ?? null, ['class' => 'form-control select2-input', 'placeholder' => 'Search Style']) !!}
+                </td>
+                <td>
+                  {!! Form::select("search_color_id", $colors ?? [], request()->get("search_color_id") ?? null, ['class' => 'form-control select2-input', 'placeholder' => 'Search Color']) !!}
+                </td>
+                <td>
+                  {!! Form::select("search_fabric_type", FABRIC_TYPES ?? [], request()->get("search_fabric_type") ?? null, ['class' => 'form-control select2-input', 'placeholder' => 'Search Fabric Type']) !!}
+                </td>
+                <td>
+                  {!! Form::text("search_invoice_no", request()->get("search_invoice_no") ?? null, ['class' => 'form-control', 'placeholder' => 'Search Invoice']) !!}
+                </td>
+                <td>
+                  {!! Form::select("search_rack_id", $racks ?? [], request()->get("search_rack_id") ?? null, ['class' => 'form-control select2-input', 'placeholder' => 'Search Rack']) !!}
+                </td>
+                <td>
+                  {!! Form::date("date", request()->get("date") ?? null, ['class' => 'form-control']) !!}
+                </td>
+                
+                
+               --------------------------------- data load by array merge-------------------------
