@@ -1,0 +1,84 @@
+
+		
+									<span class="pull-right">
+                       <a href="{{url('/stock-summary-report-download?type=pdf&'.request()->getQueryString() ?? ['search_buyer_id','search_style_id', 'search_zalo_po_id', 'search_color_id'])}}"
+                          title="Download Pdf">
+                      <i style="color: #DC0A0B" class="fa fa-file-pdf-o"></i></a> &nbsp;|
+                         <a href="{{url('/stock-summary-report-download?type=excel&'.request()->getQueryString() ?? ['search_buyer_id','search_style_id', 'search_zalo_po_id', 'search_color_id'])}}"><i
+			                         style="color: #0F733B" class="fa fa-file-excel-o"></i></a>
+					       </span>
+
+
+public function dailyStockReportDownload(Request $request)
+    {
+        $type = $request->type;
+        $start_date = $request->input('start_date') ?? date('Y-m-d');
+        $end_date = $request->input('end_date') ?? date('Y-m-d');
+        $reports = DateWiseStockSummary::filter($this->requestData($request));
+
+        $data = [
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+            'reports' => $reports,
+        ];
+
+        if ($type == 'pdf') {
+            $view = view('zalostore::reports.downloads.pdf.daily_stock_report', $data);
+            $html_content = $view->render();
+
+            // Custom Header
+            $this->PdfHeader('Daily Stock Report');
+            // Custom Footer
+            $this->PdfFooter();
+
+            PDF::SetMargins(7, 22, 7);
+            PDF::SetFontSubsetting(false);
+            PDF::SetFont('times', '', 7);
+            PDF::SetAutoPageBreak(TRUE, 11);
+            PDF::AddPage('P', 'A4');
+            PDF::writeHTML($html_content, true, true, true, true, 'C');
+
+            PDF::Output('daily_stock_report' . date('d-M-Y') . '.pdf');
+            return true;
+        } else {
+		    return \Excel::download(new DailyStockSummaryReportExport($data), 'daily_stock_summary_'.today()->format('dmY').'.xlsx');
+        }
+    }
+
+    public function stockSummaryReport(Request $request)
+    {
+        return view('zalostore::reports.stock_summary_report', array_merge([
+            'reports' => StockSummary::filter($this->requestData($request)),
+        ], $this->getModel()));
+    }
+
+    public function stockSummaryReportDownload(Request $request)
+    {
+        $currentPage = $request->page;
+        if($request->type == 'pdf'){
+            $view = view('zalostore::reports.downloads.pdf.stock_summary_report', array_merge([
+                'reports' => StockSummary::filter($this->requestData($request)),
+            ], $this->getModel() ));
+
+            $html_content = $view->render();
+
+            $this->PdfHeader('Stock Summary Report');
+
+            $this->PdfFooter();
+
+            PDF::SetMargins(7, 22, 7);
+            PDF::SetFontSubsetting(false);
+            PDF::SetFont('times', '', 7);
+            PDF::SetAutoPageBreak(TRUE, 11);
+            PDF::AddPage('P', 'A4');
+            PDF::writeHTML($html_content, true, true, true, true, 'C');
+
+            PDF::Output('stock_summary_report.pdf');
+            return true;
+        }else{
+            Paginator::currentPageResolver(function () use ($currentPage) {
+                return $currentPage;
+            });
+            return \Excel::download(new StockSummaryReportExport($request), 'stock_summary_'.today()->format('dmY').'.xlsx');
+        }
+    }
