@@ -1,3 +1,20 @@
+------------------ ssearch-button--------------------
+
+
+
+<div class="input-group">
+    <input id="searchInput" type="text" class="form-control" name="search" value="{{ request()->query('search') ?? '' }}"
+           placeholder="Search here">
+    <input type="hidden" name="id">
+    <span class="input-group-btn">
+       <button class="btn btn-info" type="submit">Search</button>
+    </span>
+</div>
+
+
+
+
+
 1) ---------------------------------
 public function index(Request $request)
     {
