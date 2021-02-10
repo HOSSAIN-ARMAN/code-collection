@@ -1,0 +1,147 @@
+1=> maatwebsite/excel
+
+------------blade-file-------------
+
+<a href="{{url('/stock-summary-report-download?type=excel&'.request()->getQueryString() ?? ['search_buyer_id','search_style_id', 'search_zalo_po_id', 'search_color_id'])}}"><i
+			                         style="color: #0F733B" class="fa fa-file-excel-o"></i></a>
+                           
+--------------controller-------------
+
+public function dailyStockReportDownload(Request $request)
+    {
+        $type = $request->type;
+        $start_date = $request->input('start_date') ?? date('Y-m-d');
+        $end_date = $request->input('end_date') ?? date('Y-m-d');
+        $reports = DateWiseStockSummary::filter($this->requestData($request));
+
+        $data = [
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+            'reports' => $reports,
+        ];
+
+        if ($type == 'pdf') {
+            $view = view('zalostore::reports.downloads.pdf.daily_stock_report', $data);
+            $html_content = $view->render();
+
+            // Custom Header
+            $this->PdfHeader('Daily Stock Report');
+            // Custom Footer
+            $this->PdfFooter();
+
+            PDF::SetMargins(7, 22, 7);
+            PDF::SetFontSubsetting(false);
+            PDF::SetFont('times', '', 7);
+            PDF::SetAutoPageBreak(TRUE, 11);
+            PDF::AddPage('P', 'A4');
+            PDF::writeHTML($html_content, true, true, true, true, 'C');
+
+            PDF::Output('daily_stock_report' . date('d-M-Y') . '.pdf');
+            return true;
+        } else {
+		    return \Excel::download(new DailyStockSummaryReportExport($data), 'daily_stock_summary_'.today()->format('dmY').'.xlsx');
+        }
+    }
+
+    public function stockSummaryReport(Request $request)
+    {
+        return view('zalostore::reports.stock_summary_report', array_merge([
+            'reports' => StockSummary::filter($this->requestData($request)),
+        ], $this->getModel()));
+    }
+
+    public function stockSummaryReportDownload(Request $request)
+    {
+        $currentPage = $request->page;
+        if($request->type == 'pdf'){
+            $view = view('zalostore::reports.downloads.pdf.stock_summary_report', array_merge([
+                'reports' => StockSummary::filter($this->requestData($request)),
+            ], $this->getModel() ));
+
+            $html_content = $view->render();
+
+            $this->PdfHeader('Stock Summary Report');
+
+            $this->PdfFooter();
+
+            PDF::SetMargins(7, 22, 7);
+            PDF::SetFontSubsetting(false);
+            PDF::SetFont('times', '', 7);
+            PDF::SetAutoPageBreak(TRUE, 11);
+            PDF::AddPage('P', 'A4');
+            PDF::writeHTML($html_content, true, true, true, true, 'C');
+
+            PDF::Output('stock_summary_report.pdf');
+            return true;
+        }else{
+            Paginator::currentPageResolver(function () use ($currentPage) {
+                return $currentPage;
+            });
+            return \Excel::download(new StockSummaryReportExport($request), 'stock_summary_'.today()->format('dmY').'.xlsx');
+        }
+    }
+    
+    
+    
+    ---------------------------------abstract class details--------------------------
+    <?php
+
+
+namespace SkylarkSoft\GoRMG\Zalostore\Exports;
+
+
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Events\BeforeExport;
+use SkylarkSoft\GoRMG\Skeleton\Traits\CustomExcelHeaderFooter;
+use SkylarkSoft\GoRMG\Skeleton\Traits\ModelData;
+use SkylarkSoft\GoRMG\Zalostore\Models\StockSummary;
+
+class StockSummaryReportExport implements WithTitle, ShouldAutoSize, FromView, ShouldQueue, WithEvents
+{
+   use Exportable, CustomExcelHeaderFooter, ModelData;
+
+   private $reqData;
+
+   public function __construct($request){
+       $this->reqData = $request;
+   }
+
+    public function title(): string
+    {
+        return 'Stock Summary';
+    }
+
+    public function view(): View
+    {
+       return view('zalostore::reports.downloads.excel.stock_summary_report', array_merge([
+            'reports' => StockSummary::filter($this->requestData($this->reqData)),
+        ], $this->getModel() ));
+    }
+
+    public function registerEvents(): array
+    {
+        return [
+            BeforeExport::class  => function(BeforeExport $event) {
+                $event->writer->setCreator('Skylark Soft Limited');
+            },
+            AfterSheet::class => function (AfterSheet $event) {
+                $cell_array = range('A', 'O');
+                $head_array_number = [1, 2, 3];
+                $highestRowNumber = $event->sheet->getDelegate()->getHighestRow();
+                $footer_array_number = [$highestRowNumber];
+                $this->excelHeaderFooter($event, $cell_array, $head_array_number, $footer_array_number);
+            }
+        ];
+    }
+}
+
+    
+    
+    
