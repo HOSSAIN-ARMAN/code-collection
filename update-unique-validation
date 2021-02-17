@@ -1,0 +1,15 @@
+ public function rules()
+    {
+        return [
+            "name" => ["required", Rule::unique('colors', 'name')->ignore($this->color)->whereNull('deleted_at')],
+        ];
+
+    }
+    
+    --------------
+    
+     public function update(ColorRequest $request, Color $color)
+    {
+        $color->fill($request->all())->save();
+        return redirect('colors');
+    }
