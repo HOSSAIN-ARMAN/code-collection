@@ -5,6 +5,16 @@
         ];
 
     }
+    OR
+    public function rules()
+    {
+        return [
+            "name" => ["required", Rule::unique('sessions')->ignore($this->route('session'))->whereNotNull('deleted_at')],  // here $this->route('session') is id 
+        ];
+
+    }
+    
+    //    Route::put('/sessions/{session}', 'SessionController@update'); or using route resource
     
     --------------
     
