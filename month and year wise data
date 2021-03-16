@@ -1,0 +1,21 @@
+        $current = new DateTime();
+        $fromDate = request('from_date') ?? '';
+        $toDate = $request['to_date'] ?? '';
+        $month = $request['month'] ? date('m', strtotime($request['month'])) : today()->month;
+        $year = $request['year'];
+
+        return date('m', strtotime($month));
+
+        $trimsBookings = TrimsDateWiseStockSummary::query()
+            ->when(($fromDate and !($toDate)), function ($query) use ($fromDate) {
+                return $query->whereDate('booking_date', '=', $fromDate);
+            })
+            ->when(($month and !($fromDate)), function ($query) use ($month) {
+                return $query->whereMonth('booking_date', '=', $month);
+            })
+            ->when(($fromDate and $toDate), function ($query) use ($fromDate, $toDate) {
+                return $query->whereBetween('booking_date', [$fromDate, $toDate]);
+            })
+            ->with('buyer:id,name', 'style:id,style_name', 'item:id,name', 'uom:id,name')
+            ->
+            orderBy('created_at', 'DESC')->paginate();
