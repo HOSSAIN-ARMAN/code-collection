@@ -1,0 +1,2 @@
+$currentPage = $type != 'excel' ?   $fabricStockDetails->currentPage() : null;
+$lastPage    = $type != 'excel' ? $fabricStockDetails->lastPage() : null;
