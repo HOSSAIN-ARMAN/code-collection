@@ -1,0 +1,111 @@
+<?php
+
+
+namespace SkylarkSoft\GoRMG\Settings\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use SkylarkSoft\GoRMG\Settings\Models\Color;
+use SkylarkSoft\GoRMG\Settings\Requests\ColorRequest;
+use SkylarkSoft\GoRMG\Settings\Traits\ManageData;
+
+class ColorController extends Controller
+{
+    use ManageData;
+
+    private $path = 'colors', $message, $formPage = 'settings::forms.colors', $index='color';
+
+    function model(){
+        return new Color();
+    }
+
+    public function index(Request $request)
+    {
+        $this->message = $this->model()->filter($request->query('search'))->orderBy('created_at', 'DESC')->paginate();
+        return view('settings::pages.colors', ['colors' => $this->message]);
+    }
+
+
+    public function create()
+    {
+        return view($this->formPage, [$this->index => $this->model()]);
+    }
+
+    public function store(ColorRequest $request)
+    {
+        return $this->updateOrStoreOrDestroy($request->all(), $this->model(), $this->path, $this->message='Data Stored Successfully!!');
+    }
+
+
+    public function edit($id)
+    {
+        return view($this->formPage, [$this->index => $this->model()->findOrFail($id)]);
+    }
+
+
+    public function update(ColorRequest $request, Color $color)
+    {
+        return $this->updateOrStoreOrDestroy($request->except('_token', '_method'), $color, $this->path, $this->message='Data Update Successfully!!');
+    }
+
+
+    public function destroy($id)
+    {
+        return $this->updateOrStoreOrDestroy(null, $this->model()->findOrFail($id), $this->path, $this->message = 'Data Deleted Successfully!!');
+    }
+
+}
+
+
+
+------------------------------------------------------------------------------------------------------------------------>
+
+<?php
+namespace SkylarkSoft\GoRMG\Settings\Traits;
+
+use Illuminate\Support\Facades\Session;
+use DB,Exception;
+
+trait ManageData {
+
+    public function updateOrStoreOrDestroy($request, $model, $path, $message)
+    {
+        try {
+            if ($request == null){
+                DB::beginTransaction();
+                $model->delete();
+                DB::commit();
+            }else{
+                DB::beginTransaction();
+                $model->fill($request)->save();
+                DB::commit();
+            }
+            Session::flash('alert-success', $message);
+            return redirect($path);
+        } catch (\Exception $e) {
+            DB::rollback();
+            Session::flash('alert-danger', "Something went wrong!{$e->getMessage()}");
+            return redirect()->back();
+        }
+
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
