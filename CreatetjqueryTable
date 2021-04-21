@@ -88,11 +88,18 @@
                 $('.table-body').append(tr);
 
             }
-
-            function removeTableRow(){
-                $("#_row").remove();
+            
+            //
+            //function removeTableRow(){
+              //  $("#_row").remove();
+              //  toastr.warning(`Removed Row!`);
+           // }
+           //
+            
+            $("#tbData").on('click', '.remove-button', function () {
+                $(this).closest('tr').remove();
                 toastr.warning(`Removed Row!`);
-            }
+            });
 
             function clearInputFiled(){
                 $("#select_item").select2('val', null);
