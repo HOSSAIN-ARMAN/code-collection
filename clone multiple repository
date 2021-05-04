@@ -1,0 +1,6 @@
+            git clone git@gitlab.com:skylarksoft/tna.git &&
+            git clone git@gitlab.com:skylarksoft/skillmatrix.git &&
+            git clone git@gitlab.com:skylarksoft/warehousemanagement.git &&
+            git clone git@gitlab.com:skylarksoft/securitycontrol.git &&
+            git clone git@gitlab.com:skylarksoft/it.git &&
+            git clone git@gitlab.com:skylarksoft/leftover.git 
