@@ -1,0 +1,6 @@
+
+{!! Form::text('approval_date', null, ['class' => 'form-control', 'id' => 'approval_date', 'placeholder' => "dd/mm/yyyy"]) !!}
+
+$("#approval_date").datepicker({
+   format: 'dd-mm-yyyy'
+});
