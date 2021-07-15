@@ -3,6 +3,10 @@
 {!! Form::text('approval_date', date('d-m-Y', strtotime($quotation_inquiry->approval_date ?? date('d-m-Y'))), ['class' => 'form-control', 'id' => 'approval_date', 'placeholder' => "dd/mm/yyyy"]) !!}
 ei line a jokhon normal insert korte jaben tokhon current date show korbe r edit mode a gele edit store date show korbe
 
+{!! Form::text('submission_date', isset($quotation_inquiry->submission_date) ? date('d-m-Y', strtotime($quotation_inquiry->submission_date )) : null, ['class' => 'form-control', 'id' => 'submission_date', 'placeholder' => "dd/mm/yyyy"]) !!}
+
+
+
 
 {!! Form::text('approval_date', null, ['class' => 'form-control', 'id' => 'approval_date', 'placeholder' => "dd/mm/yyyy"]) !!}
 
