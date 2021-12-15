@@ -1,0 +1,60 @@
+blade file code
+
+@forelse($customerAccounts as $key=>$account)
+                <tr>
+                    <td rowspan="{{ isset($customerGolds) ? count($customerGolds) + 2 : 2 }}">
+                        {{ $account->created_at->format('Y-m-d') }}
+                        <br>
+                        {{ $account->paid_status === 0  ? 'pending' : 'Paid' }}
+                    </td>
+                    <td rowspan="{{ isset($customerGolds) ? count($customerGolds) + 2 : 2 }}">{{ $account->payable }}/Tk</td>
+                    <td rowspan="{{ isset($customerGolds) ? count($customerGolds) + 2 : 2 }}">{{ $account->advance }}/Tk</td>
+                    <td rowspan="{{ isset($customerGolds) ? count($customerGolds) + 2 : 2 }}">{{ $account->due }}/Tk</td>
+                    <td rowspan="{{ isset($customerGolds) ? count($customerGolds) + 2 : 2 }}">
+                        <input id="{{$account->id}}" class="customerId" type="text" data="{{ $account->contact }}" style="width: 100px" readonly>
+                    </td>
+
+                </tr>
+
+                @if(count($customerGolds))
+                    @forelse($customerGolds as $golds)
+                        <tr>
+                            <td>{{ $golds->category_id }}</td>
+                            <td>{{ $golds->n_vori }}</td>
+                            <td>{{ $golds->n_ana }}</td>
+                            <td>{{ $golds->n_rotti }}</td>
+                            <td>{{ $golds->n_point }}</td>
+                            <td>{{ $golds->carat }}</td>
+                            <td>{{ $golds->price }} /TK</td>
+                        </tr>
+                    @empty
+                        <p>No data </p>
+                    @endforelse
+                @else
+                    <tr>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0 /TK</td>
+                    </tr>
+                @endif
+            @empty
+                <td>NO Data</td>
+            @endforelse
+            
+            
+controller code
+
+
+        $customerAccounts = CustomerAccount::where('customer_id',  '=', $id)->get();
+        $customerGolds = CustomerGold::where('customer_id', '=', $id)->get();
+
+
+        return view('admin.customer.account', [
+            'customerAccounts' => $customerAccounts,
+            'customerGolds' => $customerGolds
+        ]);
+            
