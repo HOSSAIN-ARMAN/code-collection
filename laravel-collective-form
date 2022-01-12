@@ -1,4 +1,7 @@
+
 <td>
+             			{!! Form::model($supplier, ['url' => $supplier ? 'suppliers/'.$supplier->id : 'suppliers', 'method' => $supplier ? 'PUT' : 'POST', 'files' => true, 'onsubmit' => 'submit.disabled = true; return true;']) !!}
+      
                   {!! Form::text("search_sid", request()->get("search_sid") ?? null, ['class' => 'form-control', 'placeholder' => 'Search SID']) !!}
                 </td>
                 <td>
